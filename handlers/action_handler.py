@@ -21,7 +21,7 @@ router = Router(name=__name__)
     # os.remove(video)
     # os.remove(result["path"])
 
-@router.callback_query(SelectCallback.filter(F.value == "video"))
+@router.callback_query(SelectCallback.filter())
 async def select_handler(callback_query: types.CallbackQuery, callback_data: SelectCallback, state: FSMContext) -> None:
     await callback_query.answer(None)
     await state.set_state(GetUrl.url)
