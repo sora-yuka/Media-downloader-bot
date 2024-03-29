@@ -66,33 +66,24 @@ class TikTok:
             image_group.append(requests.get(download_link))
         return image_group
         
-    def get_media_content(self, media_type: str) -> Dict:
+    def download_tiktok(self, selected_value: str) -> Dict:
         data = self.extract_link()
         
         request_post = self.session.post(self.post_url, data=data, allow_redirects=True)
         self.check_request_status(request_post)
         
-        if media_type == "video":
-            """ Receiving request tuple """
-            request_blank = self.get_video_blank(request_post)
-        elif media_type == "photo":
-            """ Receiving requests list """
-            request_blank = self.get_photo_blanks(request_post)
-        
-        media_content = requests.get(request_blank)
-        return media_content
-        
-    def download_tiktok(self, selected_value: str) -> Dict:
-        result = {}
-        
-        if selected_value == "video":
-            media_content = self.get_media_content(selected_value)
-        
-        video = save_video(media_content=media_content)
-        return video
-        
-        
-        
+        match selected_value:
+            case "video":
+                """ Receiving request tuple """
+                request_blank = self.get_video_blank(request_post)
+                return save_video(request_blank)
+                
+            case "photo":
+                """ Receiving requests list """
+                request_blank = self.get_photo_blanks(request_post)
+                # return save_images(request_blank)
+                print(save_images(request_blank))
+            
         
 
     # TODO: make new function to create caption for media

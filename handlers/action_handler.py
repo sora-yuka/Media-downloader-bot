@@ -1,15 +1,11 @@
 import os
-from aiogram import F
 from aiogram import Router, types
-from aiogram.fsm.context import FSMContext
+from aiogram.utils.markdown import hbold
 
-from ext.fsm import GetUrl
-from ext.keyboards.select_keyboard import SelectCallback
 from utilities.tiktok import TikTok
+from ext.keyboards.select_keyboard import SelectCallback, create_select_keyboard
 
 router = Router(name=__name__)
-    
-    # aiovideo = types.FSInputFile(result["path"])
     
     # await message.answer_video(
     #     video=video
@@ -18,26 +14,20 @@ router = Router(name=__name__)
         #         f"Description: {result['description']}\n"
         #         f"Tags: {result['tags']}"
     # )
-    # os.remove(video)
-    # os.remove(result["path"])
+    
+# @router.message()
+# async def download_image(
+#     message: types.Message
+# ) -> None:
+#     tiktok = TikTok(message.text)
+#     await message.answer(
+#         text=hbold("Preparing for sending..."),
+#     )
+    
+    
+    
 
-@router.callback_query(SelectCallback.filter())
-async def select_handler(callback_query: types.CallbackQuery, callback_data: SelectCallback, state: FSMContext) -> None:
-    await callback_query.answer(None)
-    await state.set_state(GetUrl.url)
-    await callback_query.message.answer(
-        text="Now, send me tiktok url"
-    )
-    
-@router.message(GetUrl.url)
-async def process_url(message: types.Message, state: FSMContext) -> None:
-    data = await state.update_data(url = message.text)
-    await message.answer(text="Preparing for senidng...")
-    await state.clear()
-    
-    tiktok = TikTok(data["url"])
-    video_link = tiktok.download_tiktok(selected_value="video")
-    video = types.FSInputFile(path=video_link)
-    await message.answer_video(video=video)
-    
-    os.remove(video_link)
+# TODO: write audio function
+# @router.message()
+# async def process_audio_url(message: types.Message) -> None:
+#     await message.answer("Closed for works")
