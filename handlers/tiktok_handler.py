@@ -37,7 +37,9 @@ async def media_save_handler(
             os.remove(video_link)
             
         case "photo":
-            photo_link = tiktok.download_tiktok("photo")
-            # photo = types.FSInputFile(path=photo_link)
-            # await message.answer_document(document=photo)
-            # os.remove(photo_link)
+            photo_links = tiktok.download_tiktok("photo")
+            
+            for photo_link in photo_links:
+                photo = types.FSInputFile(path=photo_link)
+                await message.answer_document(document=photo)
+                os.remove(photo_link)

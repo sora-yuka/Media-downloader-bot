@@ -14,18 +14,6 @@ router = Router(name=__name__)
         #         f"Description: {result['description']}\n"
         #         f"Tags: {result['tags']}"
     # )
-    
-# @router.message()
-# async def download_image(
-#     message: types.Message
-# ) -> None:
-#     tiktok = TikTok(message.text)
-#     await message.answer(
-#         text=hbold("Preparing for sending..."),
-#     )
-    
-    
-    
 
 # TODO: write audio function
 # @router.message()

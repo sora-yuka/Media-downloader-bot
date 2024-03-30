@@ -63,7 +63,7 @@ class TikTok:
 
         for image_blank in image_blanks:
             download_link = image_blank.get("src")
-            image_group.append(requests.get(download_link))
+            image_group.append(download_link)
         return image_group
         
     def download_tiktok(self, selected_value: str) -> Dict:
@@ -81,8 +81,7 @@ class TikTok:
             case "photo":
                 """ Receiving requests list """
                 request_blank = self.get_photo_blanks(request_post)
-                # return save_images(request_blank)
-                print(save_images(request_blank))
+                return save_images(request_blank)
             
         
 
