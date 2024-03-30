@@ -1,11 +1,9 @@
 import os
 from aiogram import Router, types
 from aiogram.utils.markdown import hbold
-from aiogram.fsm.context import FSMContext
 
 from utilities.tiktok import TikTok
 from ext.keyboards.select_keyboard import SelectCallback, create_select_keyboard
-from ext.fsm import GetUrl
 
 router = Router(name=__name__)
 
