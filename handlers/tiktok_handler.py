@@ -31,10 +31,15 @@ async def media_save_handler(
     
     match select_result["media"]:
         case "video":
-            video_link = tiktok.download_tiktok("video")
-            video = types.FSInputFile(path=video_link)
-            await message.answer_video(video=video)
-            os.remove(video_link)
+            response = tiktok.download_tiktok("video")
+            video = types.FSInputFile(path=response["path"])
+            await message.answer_video(
+                video=video,
+                caption=hbold(f"Author: {response['author']}\n"
+                f"Description: {response['description']}\n"
+                f"Tags: {response['tags']}")
+            )
+            os.remove(response["path"])
             
         case "photo":
             photo_links = tiktok.download_tiktok("photo")
