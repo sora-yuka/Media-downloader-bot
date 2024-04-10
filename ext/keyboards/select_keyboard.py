@@ -16,8 +16,8 @@ def create_select_keyboard() -> InlineKeyboardBuilder:
         text="PHOTO",
         callback_data=(SelectCallback(value="photo"))
     )
-    builder.button(
-        text="AUDIO",
-        callback_data=(SelectCallback(value="audio"))
-    )
+    # builder.button(
+    #     text="AUDIO",
+    #     callback_data=(SelectCallback(value="audio"))
+    # )
     return builder.as_markup()

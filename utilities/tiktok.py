@@ -30,7 +30,6 @@ class TikTok:
         
         self.server_url = "https://musicaldown.com/"
         self.post_url = self.server_url + "id/download"
-        self.response = {}
         
         self.session = requests.Session()
         self.session.headers.update(self.headers)
@@ -62,46 +61,28 @@ class TikTok:
         return video_blank
 
     def get_photo_blanks(self, request: requests) -> List[requests.Response]:
-        image_group = []
+        image_blank_group = []
         image_blanks = BeautifulSoup(request.text, "html.parser").findAll(
             "img", attrs={"loading": "lazy"})
 
         for image_blank in image_blanks:
             download_link = image_blank.get("src")
-            image_group.append(download_link)
+            image_blank_group.append(download_link)
         return image_blank_group
-    
-    def get_caption_blank(self, request: requests) -> Dict[str, requests.Response]:
-        caption_blank = BeautifulSoup(request.text, "html.parser").findAll(
-            "h2", attrs={"class": "white-text"})
-        self.response["author"] = caption_blank[0].text
-        splitter = caption_blank[1].text.find("#")
-        
-        if caption_blank[1].text.startswith("#"):
-            self.response["description"] = "empty"
-            self.response["tags"] = caption_blank[1].text
-        elif splitter < 0:
-            self.response["description"] = caption_blank[1].text
-            self.response["tags"] = "empty"
-        else:
-            self.response["description"] = caption_blank[1].text[:splitter]
-            self.response["tags"] = caption_blank[1].text[splitter:]
         
     def download_tiktok(self, selected_value: str) -> Dict[str, str]:
         data = self.extract_link()
         request_post = self.session.post(self.post_url, data=data, allow_redirects=True)
         
         self.check_request_status(request_post)
-        self.get_caption_blank(request_post)
         
         match selected_value:
             case "video":
                 """ Receiving request tuple """
                 request_blank = self.get_video_blank(request_post)
-                self.response["path"] = save_video(request_blank)
+                return save_video(request_blank)
                 
             case "photo":
                 """ Receiving requests list """
                 request_blank = self.get_photo_blanks(request_post)
-                self.response["path"] = save_images(request_blank)
-        return self.response
+                return save_images(request_blank)
